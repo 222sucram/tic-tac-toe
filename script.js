@@ -1,7 +1,32 @@
 const [...displayBoard] = document.querySelectorAll(".tile")
 const containerBoard = document.querySelector(".container-board")
+const titlePlayerOne = document.querySelector(".player-title",".one")
+const titlePlayerTwo = document.querySelector(".two")
 const modal = document.querySelector(".modal")
 const modalMsg = document.querySelector(".modal-msg")
+const modalBtn = document.querySelector(".game-start")
+let players = []
+
+modalBtn.addEventListener('click', () => {
+    if(!titlePlayerOne.firstChild.value || !titlePlayerTwo.firstChild.value) {
+        modalBtn.textContent = "Please enter player names."
+    } 
+
+    if(titlePlayerOne.firstChild.value && titlePlayerTwo.firstChild.value) {
+        titlePlayerOne.innerHTML = `<p>${titlePlayerOne.firstChild.value}</p>`
+        titlePlayerTwo.innerHTML = `<p>${titlePlayerTwo.firstChild.value}</p>`
+        players.push(newPlayer(titlePlayerOne.firstChild.innerHTML, 'X'))
+        players.push(newPlayer(titlePlayerTwo.firstChild.innerHTML, 'O'))
+        modalBtn.classList.toggle("hide")
+        containerBoard.classList.toggle("hide")
+        displayBoard.forEach((tile, i) => {
+            tile.addEventListener('click', () => {
+                controlFlow.boardUpdate(tile, i, players)
+            })
+            
+        })
+    }
+})
 
 const gameBoard = (function(){
     const boardObj = {
@@ -9,30 +34,40 @@ const gameBoard = (function(){
                    '','','',
                    '','',''],
         gameCheck(players, turn) {
-            console.log(players[turn].team)
             if(this.boardArr[0] == players[turn].team && this.boardArr[1] == players[turn].team && this.boardArr[2] == players[turn].team){
+                console.log(players[turn].name)
                 modalMsg.textContent = `${players[turn].name} is the Winner!`
+                modalBtn.textContent = 'Play Again?'
+                modalBtn.classList.toggle("hide")
+                modalBtn.addEventListener('click', this.boardInit)
             }
             if(this.boardArr[3] == players[turn].team && this.boardArr[4] == players[turn].team && this.boardArr[5] == players[turn].team){
                 modalMsg.textContent = `${players[turn].name} is the Winner!`
+                modalBtn.textContent = 'Play Again?'
             }
             if(this.boardArr[6] == players[turn].team && this.boardArr[7] == players[turn].team && this.boardArr[8] == players[turn].team){
                 modalMsg.textContent = `${players[turn].name} is the Winner!`
+                modalBtn.textContent = 'Play Again?'
             }
             if(this.boardArr[0] == players[turn].team && this.boardArr[3] == players[turn].team && this.boardArr[6] == players[turn].team){
                 modalMsg.textContent = `${players[turn].name} is the Winner!`
+                modalBtn.textContent = 'Play Again?'
             }
             if(this.boardArr[1] == players[turn].team && this.boardArr[4] == players[turn].team && this.boardArr[7] == players[turn].team){
                 modalMsg.textContent = `${players[turn].name} is the Winner!`
+                modalBtn.textContent = 'Play Again?'
             }
             if(this.boardArr[2] == players[turn].team && this.boardArr[5] == players[turn].team && this.boardArr[8] == players[turn].team){
                 modalMsg.textContent = `${players[turn].name} is the Winner!`
+                modalBtn.textContent = 'Play Again?'
             }
             if(this.boardArr[0] == players[turn].team && this.boardArr[4] == players[turn].team && this.boardArr[8] == players[turn].team){
                 modalMsg.textContent = `${players[turn].name} is the Winner!`
+                modalBtn.textContent = 'Play Again?'
             }
             if(this.boardArr[2] == players[turn].team && this.boardArr[4] == players[turn].team && this.boardArr[6] == players[turn].team){
                 modalMsg.textContent = `${players[turn].name} is the Winner!`
+                modalBtn.textContent = 'Play Again?'
             }
         },
         boardInit() {
@@ -42,8 +77,10 @@ const gameBoard = (function(){
             '','','']
 
             displayBoard.forEach((tile) => {
-                
+            tile.innerHTML = ''
             })
+            modalBtn.classList.toggle("hide")
+            modalMsg.textContent = ''
         }
     }
     
@@ -51,7 +88,6 @@ const gameBoard = (function(){
 })();
 
 const controlFlow = (function(){
-    const players = [newPlayer('Alex', 'X'), newPlayer('Esther', 'O')]
     let turn = 0
     const boardUpdate = function(tile, i, player) {
         player = player[turn]
@@ -71,7 +107,6 @@ const controlFlow = (function(){
         } else turn = 0
     }
     return {
-        players,
         boardUpdate
     }
 })()
@@ -85,10 +120,10 @@ function newPlayer(name, team) {
 }
 
 
-displayBoard.forEach((tile, i) => {
-    tile.addEventListener('click', () => {
-        controlFlow.boardUpdate(tile, i, controlFlow.players)
-    })
+// displayBoard.forEach((tile, i) => {
+//     tile.addEventListener('click', () => {
+//         controlFlow.boardUpdate(tile, i, controlFlow.players)
+//     })
     
-})
+// })
 
