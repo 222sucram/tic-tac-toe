@@ -57,7 +57,7 @@ table {
 
 .container-board{
     height: 75%;
-    width: 75%;
+    width: 60%;
     background-color: lightgray;
     grid-column: 2 / 3;
     grid-row: 2 / 4 ;
@@ -133,6 +133,14 @@ input {
 input:hover {
     cursor: pointer;
     border-color: black;
+}
+
+.player-X {
+    margin-left: 50px;
+}
+
+.player-O {
+    margin-right: 50px;
 }
 
 .player-X:focus {
