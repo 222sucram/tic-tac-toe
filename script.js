@@ -155,21 +155,21 @@ const controlFlow = (function(){
             turn = 1
             let boardNum = this.randNum()
             
-            // const cpu = function(num) {
-            // let cpuSelect = player[turn].team
-            // let addCpu = document.createElement('p')
-            // addCpu.classList.add(`${cpuSelect}`)
-            // displayBoard[num].classList.add('picked')
-            // gameBoard.boardObj.boardArr[num] = cpuSelect
-            // addCpu.textContent = cpuSelect
-            // displayBoard[num].appendChild(addCpu)
-            // turn = 0
-            // gameBoard.boardObj.gameCheck(players, 1)
+             const cpu = function(num) {
+             let cpuSelect = player[turn].team
+             let addCpu = document.createElement('p')
+             addCpu.classList.add(`${cpuSelect}`)
+             displayBoard[num].classList.add('picked')
+             gameBoard.boardObj.boardArr[num] = cpuSelect
+             addCpu.textContent = cpuSelect
+             displayBoard[num].appendChild(addCpu)
+             turn = 0
+             gameBoard.boardObj.gameCheck(players, 1)
             }
 
-            // if(gameBoard.boardObj.gameCheck(players, turn) == false) {
-            //     cpu(boardNum)
-            // }
+             if(gameBoard.boardObj.gameCheck(players, turn) == false) {
+                 cpu(boardNum)
+            }
             
         } else turn = 0
     }
