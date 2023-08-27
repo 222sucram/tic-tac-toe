@@ -101,14 +101,10 @@ const gameBoard = (function(){
                 displayBoard[num].appendChild(addCpu)
                 turn = 0
                 const cpuPick = setTimeout(() => {gameBoard.boardObj.gameCheck(players, 1)}, 600)
-                
-                // gameBoard.boardObj.gameCheck(players, 1)
                 }
 
                 cpu(boardNum)
             }
-            
-            //check if cpu and make move
 
             if(this.win == true) {
                 return true
@@ -222,31 +218,3 @@ function newPlayer(name, team, currTurn) {
 
 controlFlow.initGame()
 
-// to do
-// add a way to track the turn consistently
-// at each trn check if cpu is a player
-// after a win check if its cpu turn and add input if so
-
-
-
-// if(turn == 0) {
-//     turn = 1
-//     let boardNum = this.randNum()
-    
-//      const cpu = function(num) {
-//      let cpuSelect = player[turn].team
-//      let addCpu = document.createElement('p')
-//      addCpu.classList.add(`${cpuSelect}`)
-//      displayBoard[num].classList.add('picked')
-//      gameBoard.boardObj.boardArr[num] = cpuSelect
-//      addCpu.textContent = cpuSelect
-//      displayBoard[num].appendChild(addCpu)
-//      turn = 0
-//      gameBoard.boardObj.gameCheck(players, 1)
-//     }
-
-//      if(gameBoard.boardObj.gameCheck(players, turn) == false) {
-//          cpu(boardNum)
-//     }
-    
-// } else turn = 0
