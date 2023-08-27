@@ -13,15 +13,15 @@ const gameBoard = (function(){
         boardArr: ['','','',
                    '','','',
                    '','',''],
+        win: false,  
         gameCheck(players, turn) {
-            let win = false
             if(this.boardArr[0] == players[turn].team && this.boardArr[1] == players[turn].team && this.boardArr[2] == players[turn].team){
                 modalMsg.textContent = `${players[turn].name} is the Winner!`
                 modalBtn.textContent = 'Play Again?'
                 modalBtn.classList.toggle("hide")
                 containerBoard.classList.toggle("hide")
                 modalBtn.addEventListener('click', this.boardInit)
-                win = true
+                this.win = true
             }
             if(this.boardArr[3] == players[turn].team && this.boardArr[4] == players[turn].team && this.boardArr[5] == players[turn].team){
                 modalMsg.textContent = `${players[turn].name} is the Winner!`
@@ -29,7 +29,7 @@ const gameBoard = (function(){
                 modalBtn.classList.toggle("hide")
                 containerBoard.classList.toggle("hide")
                 modalBtn.addEventListener('click', this.boardInit)
-                win = true
+                this.win = true
             }
             if(this.boardArr[6] == players[turn].team && this.boardArr[7] == players[turn].team && this.boardArr[8] == players[turn].team){
                 modalMsg.textContent = `${players[turn].name} is the Winner!`
@@ -37,7 +37,7 @@ const gameBoard = (function(){
                 modalBtn.classList.toggle("hide")
                 containerBoard.classList.toggle("hide")
                 modalBtn.addEventListener('click', this.boardInit)
-                win = true
+                this.win = true
             }
             if(this.boardArr[0] == players[turn].team && this.boardArr[3] == players[turn].team && this.boardArr[6] == players[turn].team){
                 modalMsg.textContent = `${players[turn].name} is the Winner!`
@@ -45,7 +45,7 @@ const gameBoard = (function(){
                 modalBtn.classList.toggle("hide")
                 containerBoard.classList.toggle("hide")
                 modalBtn.addEventListener('click', this.boardInit)
-                win = true
+                this.win = true
             }
             if(this.boardArr[1] == players[turn].team && this.boardArr[4] == players[turn].team && this.boardArr[7] == players[turn].team){
                 modalMsg.textContent = `${players[turn].name} is the Winner!`
@@ -53,7 +53,7 @@ const gameBoard = (function(){
                 modalBtn.classList.toggle("hide")
                 containerBoard.classList.toggle("hide")
                 modalBtn.addEventListener('click', this.boardInit)
-                win = true
+                this.win = true
             }
             if(this.boardArr[2] == players[turn].team && this.boardArr[5] == players[turn].team && this.boardArr[8] == players[turn].team){
                 modalMsg.textContent = `${players[turn].name} is the Winner!`
@@ -61,7 +61,7 @@ const gameBoard = (function(){
                 modalBtn.classList.toggle("hide")
                 containerBoard.classList.toggle("hide")
                 modalBtn.addEventListener('click', this.boardInit)
-                win = true
+                this.win = true
             }
             if(this.boardArr[0] == players[turn].team && this.boardArr[4] == players[turn].team && this.boardArr[8] == players[turn].team){
                 modalMsg.textContent = `${players[turn].name} is the Winner!`
@@ -69,7 +69,7 @@ const gameBoard = (function(){
                 modalBtn.classList.toggle("hide")
                 containerBoard.classList.toggle("hide")
                 modalBtn.addEventListener('click', this.boardInit)
-                win = true
+                this.win = true
             }
             if(this.boardArr[2] == players[turn].team && this.boardArr[4] == players[turn].team && this.boardArr[6] == players[turn].team){
                 modalMsg.textContent = `${players[turn].name} is the Winner!`
@@ -77,7 +77,7 @@ const gameBoard = (function(){
                 modalBtn.classList.toggle("hide")
                 containerBoard.classList.toggle("hide")
                 modalBtn.addEventListener('click', this.boardInit)
-                win = true
+                this.win = true
             } 
             if(this.boardArr[0] && this.boardArr[1] && this.boardArr[2] && this.boardArr[3] && this.boardArr[4] && this.boardArr[5] && this.boardArr[6] && this.boardArr[7] && this.boardArr[8] && win == false) {
                 modalMsg.textContent = `It's a Draw!`
@@ -85,7 +85,16 @@ const gameBoard = (function(){
                 modalBtn.classList.toggle("hide")
                 containerBoard.classList.toggle("hide")
                 modalBtn.addEventListener('click', this.boardInit)
+                this.win = true
             }
+
+            if(this.win == true) {
+                return true
+            } 
+            if(this.win == false) {
+                return false
+            }
+
         },
         boardInit() {
             boardObj.boardArr = 
@@ -100,6 +109,9 @@ const gameBoard = (function(){
             })
             modalBtn.classList.toggle("hide")
             modalMsg.textContent = ''
+            // if cpu turn enter input, sort issues determining the turn
+
+            console.log(players[controlFlow.turn])
         }
     }
     
@@ -108,21 +120,57 @@ const gameBoard = (function(){
 
 const controlFlow = (function(){
     let turn = 0
+    let cpu 
+
+    const randNum = function() {
+        let available = false
+        let num
+
+        while (available == false) {
+           num = Math.floor(Math.random() * (9 - 0) + 0)
+            if(gameBoard.boardObj.boardArr[num] == '') {
+                available = true
+            }
+        }
+        return num
+     }
+
     const boardUpdate = function(tile, i, player) {
-        player = player[turn]
+        console.log(turn)
+        let currPlayer = player[turn]
+
         let index = tile.classList[1]
          if(gameBoard.boardObj.boardArr[index]) {
                 return
             }
-        gameBoard.boardObj.boardArr[index] = player.team
+        gameBoard.boardObj.boardArr[index] = currPlayer.team
         let playerPick = document.createElement('p')
-        playerPick.classList.add(player.team)
+        playerPick.classList.add(currPlayer.team)
         displayBoard[i].classList.add('picked')
         playerPick.textContent = gameBoard.boardObj.boardArr[i]
         tile.appendChild(playerPick)
         gameBoard.boardObj.gameCheck(players, turn)
+
         if(turn == 0) {
             turn = 1
+            let boardNum = this.randNum()
+            
+            // const cpu = function(num) {
+            // let cpuSelect = player[turn].team
+            // let addCpu = document.createElement('p')
+            // addCpu.classList.add(`${cpuSelect}`)
+            // displayBoard[num].classList.add('picked')
+            // gameBoard.boardObj.boardArr[num] = cpuSelect
+            // addCpu.textContent = cpuSelect
+            // displayBoard[num].appendChild(addCpu)
+            // turn = 0
+            // gameBoard.boardObj.gameCheck(players, 1)
+            }
+
+            // if(gameBoard.boardObj.gameCheck(players, turn) == false) {
+            //     cpu(boardNum)
+            // }
+            
         } else turn = 0
     }
 
@@ -135,8 +183,8 @@ const controlFlow = (function(){
             if(titlePlayerOne.firstChild.value && titlePlayerTwo.firstChild.value) {
                 titlePlayerOne.innerHTML = `<p>${titlePlayerOne.firstChild.value}</p>`
                 titlePlayerTwo.innerHTML = `<p>${titlePlayerTwo.firstChild.value}</p>`
-                players.push(newPlayer(titlePlayerOne.firstChild.innerHTML, 'X'))
-                players.push(newPlayer(titlePlayerTwo.firstChild.innerHTML, 'O'))
+                players.push(newPlayer(titlePlayerOne.firstChild.innerHTML, 'X', true))
+                players.push(newPlayer(titlePlayerTwo.firstChild.innerHTML, 'O', false))
                 modalBtn.classList.toggle("hide")
                 containerBoard.classList.toggle("hide")
                 displayBoard.forEach((tile, i) => {
@@ -148,19 +196,28 @@ const controlFlow = (function(){
             }
         })
     }
+ 
     
     return {
         boardUpdate,
-        initGame
+        initGame,
+        randNum,
+        turn
     }
 })()
 
 
-function newPlayer(name, team) {
+function newPlayer(name, team, currTurn) {
     return {
         name: name,
-        team: team
+        team: team,
+        currTurn: currTurn
     }
 }
 
 controlFlow.initGame()
+
+// to do
+// add a way to track the turn consistently
+// at each trn check if cpu is a player
+// after a win check if its cpu turn and add input if so
